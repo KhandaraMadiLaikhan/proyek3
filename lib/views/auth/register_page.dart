@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:proyek/services/auth_service.dart';
 import 'package:proyek/views/dashboard/client_dashboard.dart';
 
@@ -23,69 +24,168 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Register')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: ListView(
-            children: [
-              TextFormField(
-                controller: _fullNameController,
-                decoration: const InputDecoration(labelText: 'Full Name'),
-                validator: (value) => value!.isEmpty ? 'Required' : null,
-              ),
-              TextFormField(
-                controller: _usernameController,
-                decoration: const InputDecoration(labelText: 'Username'),
-                validator: (value) => value!.isEmpty ? 'Required' : null,
-              ),
-              TextFormField(
-                controller: _passwordController,
-                obscureText: true,
-                decoration: const InputDecoration(labelText: 'Password'),
-                validator: (value) => value!.isEmpty ? 'Required' : null,
-              ),
-              TextFormField(
-                controller: _confirmPasswordController,
-                obscureText: true,
-                decoration: const InputDecoration(labelText: 'Confirm Password'),
-                validator: (value) {
-                  if (value!.isEmpty) return 'Required';
-                  if (value != _passwordController.text) return 'Not match';
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _ageController,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(labelText: 'Age'),
-                validator: (value) => value!.isEmpty ? 'Required' : null,
-              ),
-              DropdownButtonFormField<String>(
-                value: _gender,
-                decoration: const InputDecoration(labelText: 'Gender'),
-                items: const [
-                  DropdownMenuItem(value: 'male', child: Text('Male')),
-                  DropdownMenuItem(value: 'female', child: Text('Female')),
-                ],
-                onChanged: (value) => setState(() => _gender = value),
-                validator: (value) => value == null ? 'Required' : null,
-              ),
-              const SizedBox(height: 20),
-              _isLoading
-                  ? const Center(child: CircularProgressIndicator())
-                  : ElevatedButton(
-                      onPressed: _register,
-                      child: const Text('Register'),
+      backgroundColor: const Color(0xFFF5F5F5),
+      body: Stack(
+        children: [
+          Center(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(24.0),
+              child: Form(
+                key: _formKey,
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20)),
+                  elevation: 8,
+                  child: Padding(
+                    padding: const EdgeInsets.all(24.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          'Daftar',
+                          style: GoogleFonts.poppins(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blueGrey[800],
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        _buildInputField(
+                          controller: _fullNameController,
+                          label: 'Nama Lengkap',
+                          icon: Icons.person,
+                        ),
+                        const SizedBox(height: 16),
+                        _buildInputField(
+                          controller: _usernameController,
+                          label: 'Username',
+                          icon: Icons.person_outline,
+                        ),
+                        const SizedBox(height: 16),
+                        _buildInputField(
+                          controller: _passwordController,
+                          label: 'Password',
+                          icon: Icons.lock_outline,
+                          isPassword: true,
+                        ),
+                        const SizedBox(height: 16),
+                        _buildInputField(
+                          controller: _confirmPasswordController,
+                          label: 'Konfirmasi Password',
+                          icon: Icons.lock_reset,
+                          isPassword: true,
+                          validator: (value) {
+                            if (value!.isEmpty) return 'Wajib diisi';
+                            if (value != _passwordController.text) {
+                              return 'Password tidak cocok';
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 16),
+                        _buildInputField(
+                          controller: _ageController,
+                          label: 'Usia',
+                          icon: Icons.calendar_today,
+                          keyboardType: TextInputType.number,
+                        ),
+                        const SizedBox(height: 16),
+                        DropdownButtonFormField<String>(
+                          value: _gender,
+                          decoration: InputDecoration(
+                            labelText: 'Jenis Kelamin',
+                            prefixIcon: const Icon(Icons.wc),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(14)),
+                            filled: true,
+                            fillColor: Colors.white,
+                          ),
+                          items: const [
+                            DropdownMenuItem(
+                                value: 'male', child: Text('Laki-laki')),
+                            DropdownMenuItem(
+                                value: 'female', child: Text('Perempuan')),
+                          ],
+                          onChanged: (value) => setState(() => _gender = value),
+                          validator: (value) =>
+                              value == null ? 'Wajib diisi' : null,
+                        ),
+                        const SizedBox(height: 24),
+                        _isLoading
+                            ? const CircularProgressIndicator()
+                            : SizedBox(
+                                width: double.infinity,
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 14),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(14),
+                                    ),
+                                  ),
+                                  onPressed: _register,
+                                  child: Text(
+                                    'Silakan isi data dibawah ini',
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                        const SizedBox(height: 12),
+                        TextButton(
+                          onPressed: () => Navigator.pushReplacementNamed(
+                              context, '/login'),
+                          child: Text(
+                            'Sudah punya akun? Masuk',
+                            style:
+                                GoogleFonts.poppins(color: Colors.blueGrey),
+                          ),
+                        ),
+                      ],
                     ),
-              TextButton(
-                onPressed: () => Navigator.pushReplacementNamed(context, '/login'),
-                child: const Text('Already have an account? Login'),
+                  ),
+                ),
               ),
-            ],
+            ),
           ),
-        ),
+          Positioned(
+            left: 16,
+            bottom: 16,
+            child: FloatingActionButton(
+              mini: true,
+              backgroundColor: Colors.grey[200],
+              elevation: 0,
+              onPressed: () => Navigator.pop(context),
+              child: const Icon(Icons.arrow_back, color: Colors.black),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildInputField({
+    required TextEditingController controller,
+    required String label,
+    required IconData icon,
+    TextInputType keyboardType = TextInputType.text,
+    bool isPassword = false,
+    String? Function(String?)? validator,
+  }) {
+    return TextFormField(
+      controller: controller,
+      obscureText: isPassword,
+      keyboardType: keyboardType,
+      validator: validator ??
+          (value) => value!.isEmpty ? 'Wajib diisi' : null,
+      decoration: InputDecoration(
+        labelText: label,
+        prefixIcon: Icon(icon),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
+        filled: true,
+        fillColor: Colors.white,
       ),
     );
   }

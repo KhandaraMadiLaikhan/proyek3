@@ -5,6 +5,7 @@ import 'package:proyek/views/auth/login_page.dart';
 import 'package:proyek/views/auth/register_page.dart';
 import 'package:proyek/views/dashboard/client_dashboard.dart';
 import 'package:proyek/views/home_page.dart';
+import 'package:proyek/views/products/product_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -27,6 +28,9 @@ class MyApp extends StatelessWidget {
         AppRoutes.login: (context) => const LoginPage(),
         AppRoutes.register: (context) => const RegisterPage(),
         AppRoutes.dashboard: (context) => ClientDashboardPage(
+              client: ModalRoute.of(context)!.settings.arguments as Client,
+            ),
+        AppRoutes.products: (context) => ProductsPage(
               client: ModalRoute.of(context)!.settings.arguments as Client,
             ),
       },

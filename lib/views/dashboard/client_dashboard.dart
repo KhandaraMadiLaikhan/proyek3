@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:proyek/models/client.dart';
 import 'package:proyek/routes/app_routes.dart';
 import 'package:proyek/services/auth_service.dart';
+import 'package:proyek/views/products/product_page.dart';
 
 class ClientDashboardPage extends StatefulWidget {
   final Client client;
@@ -26,7 +27,12 @@ class _ClientDashboardPageState extends State<ClientDashboardPage> {
             // Dashboard Container
             Container(
               width: double.infinity,
-              constraints: const BoxConstraints(maxWidth: 600),
+              constraints: BoxConstraints(
+                maxWidth: MediaQuery.of(context).size.width < 600
+                    ? MediaQuery.of(context).size.width
+                    : 600,
+                //Berarti "Kalau layar lebih kecil dari 600px, pakai ukuran layar itu. Tapi kalau lebih besar, tetap batasi di 600px."
+              ),
               padding: const EdgeInsets.all(30),
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -54,7 +60,7 @@ class _ClientDashboardPageState extends State<ClientDashboardPage> {
                       textAlign: TextAlign.center,
                     ),
                   ),
-                  
+
                   // Client Info
                   Container(
                     margin: const EdgeInsets.only(bottom: 20),
@@ -78,7 +84,7 @@ class _ClientDashboardPageState extends State<ClientDashboardPage> {
                       ],
                     ),
                   ),
-                  
+
                   // Buttons Row
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -95,7 +101,13 @@ class _ClientDashboardPageState extends State<ClientDashboardPage> {
                           backgroundColor: const Color(0xFF28a745),
                         ),
                         onPressed: () {
-                          // Navigator.pushNamed(context, AppRoutes.products);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  ProductsPage(client: widget.client),
+                            ),
+                          );
                         },
                         child: const Text('Beli Produk'),
                       ),
@@ -104,35 +116,77 @@ class _ClientDashboardPageState extends State<ClientDashboardPage> {
                 ],
               ),
             ),
-            
-            // Info Cards
+
+            // Footer Links
+            Container(
+              width: double.infinity,
+              constraints: BoxConstraints(
+                maxWidth: MediaQuery.of(context).size.width < 600
+                    ? MediaQuery.of(context).size.width
+                    : 600,
+              ),
+              margin: const EdgeInsets.only(top: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      // Navigasi ke halaman panduan
+                      // Navigator.pushNamed(context, AppRoutes.guide);
+                    },
+                    child: const Text(
+                      'Panduan',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.blue,
+                      ),
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      // Navigasi ke halaman profil
+                      // Navigator.pushNamed(context, AppRoutes.profile);
+                    },
+                    child: const Text(
+                      'Profil One Gym',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.blue,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            // Info Cards - Now with equal width
             Container(
               margin: const EdgeInsets.only(top: 30),
-              child: Wrap(
-                spacing: 20,
-                runSpacing: 20,
+              child: Column(
                 children: [
                   _buildInfoCard(
                     title: 'Metode Pembayaran "DANA"',
                     content: 'Admin\nNo Dana : 08778678531',
                   ),
+                  const SizedBox(height: 20),
                   _buildInfoCard(
                     title: 'Instruksi Pembayaran Dana',
                     content: '1. Buka Aplikasi Dana\n'
-                             '2. Klik Kirim Uang\n'
-                             '3. Masukan No Dana Diatas\n'
-                             '4. Masukan Jumlah Pembayaran\n'
-                             '5. Masukan No PIN\n'
-                             '6. Detail\n'
-                             '7. Screenshoot bukti pembayaran\n'
-                             '8. Kirim nama lengkap, username beserta bukti screenshoot diatas ke nomor Whatsapp : 081945095702',
+                        '2. Klik Kirim Uang\n'
+                        '3. Masukan No Dana Diatas\n'
+                        '4. Masukan Jumlah Pembayaran\n'
+                        '5. Masukan No PIN\n'
+                        '6. Detail\n'
+                        '7. Screenshoot bukti pembayaran\n'
+                        '8. Kirim nama lengkap, username beserta bukti screenshoot diatas ke nomor Whatsapp : 081945095702',
                   ),
+                  const SizedBox(height: 20),
                   _buildInfoCard(
                     title: 'Konfirmasi Pembelian',
                     content: '1. Klik \'Beli Produk\'\n'
-                             '2. Pilih salah satu produk yang tersedia\n'
-                             '3. Klik "Beli" produk\n'
-                             '4. Setelah pembelian berhasil, lakukan perintah sesuai dengan laman (Intruksi Pembayaran)',
+                        '2. Pilih salah satu produk yang tersedia\n'
+                        '3. Klik "Beli" produk\n'
+                        '4. Setelah pembelian berhasil, lakukan perintah sesuai dengan laman (Intruksi Pembayaran)',
                   ),
                 ],
               ),
@@ -145,7 +199,12 @@ class _ClientDashboardPageState extends State<ClientDashboardPage> {
 
   Widget _buildInfoCard({required String title, required String content}) {
     return Container(
-      width: 300,
+      width: double.infinity,
+      constraints: BoxConstraints(
+        maxWidth: MediaQuery.of(context).size.width < 600
+            ? MediaQuery.of(context).size.width
+            : 600,
+      ),
       padding: const EdgeInsets.all(15),
       decoration: BoxDecoration(
         color: Colors.white,

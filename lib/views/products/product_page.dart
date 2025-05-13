@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:proyek/models/client.dart';
 import 'package:proyek/models/product.dart';
 import 'package:proyek/services/product_services.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ProductsPage extends StatefulWidget {
   final Client client;
@@ -27,7 +29,17 @@ class _ProductsPageState extends State<ProductsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Produk One Gym'),
+        centerTitle: true,
+        title: Text(
+          'Produk One Gym',
+          style: GoogleFonts.poppins(
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+            letterSpacing: 1.2,
+            color: const Color.fromARGB(255, 0, 0, 0),
+          ),
+        ),
+        backgroundColor: const Color.fromARGB(255, 233, 233, 247),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
@@ -54,10 +66,10 @@ class _ProductsPageState extends State<ProductsPage> {
     return GridView.builder(
       padding: const EdgeInsets.all(16),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        crossAxisSpacing: 16,
-        mainAxisSpacing: 16,
-        childAspectRatio: 0.8,
+        crossAxisCount: 3,
+        crossAxisSpacing: 10,
+        mainAxisSpacing: 10,
+        childAspectRatio: 0.85,
       ),
       itemCount: products.length,
       itemBuilder: (context, index) {
@@ -80,15 +92,20 @@ class _ProductsPageState extends State<ProductsPage> {
         children: [
           Expanded(
             child: ClipRRect(
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
+              borderRadius:
+                  const BorderRadius.vertical(top: Radius.circular(10)),
               child: product.imageUrl != null
-                  ? Image.network(
-                      'http://192.168.19.208:8000/storage/${product.imageUrl}',
+                  ? CachedNetworkImage(
+                      imageUrl:
+                          'http://192.168.19.208:8000/storage/${product.imageUrl}',
                       fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) =>
-                          const Icon(Icons.error),
+                      placeholder: (context, url) => const Center(
+                          child: CircularProgressIndicator(strokeWidth: 2)),
+                      errorWidget: (context, url, error) => Image.asset(
+                          'images/gym5.png',
+                          fit: BoxFit.cover),
                     )
-                  : const Icon(Icons.image, size: 100),
+                  : Image.asset('images/gym5.png', fit: BoxFit.cover),
             ),
           ),
           Padding(
@@ -100,7 +117,7 @@ class _ProductsPageState extends State<ProductsPage> {
                   product.name,
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 16,
+                    fontSize: 18,
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -138,9 +155,8 @@ class _ProductsPageState extends State<ProductsPage> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: canPurchase ? Colors.green : Colors.grey,
               ),
-              onPressed: canPurchase
-                  ? () => _purchaseProduct(context, product)
-                  : null,
+              onPressed:
+                  canPurchase ? () => _purchaseProduct(context, product) : null,
               child: Text(
                 canPurchase ? 'Beli' : 'Usia Tidak Memenuhi',
                 style: const TextStyle(color: Colors.white),
@@ -194,7 +210,7 @@ class _ProductsPageState extends State<ProductsPage> {
             const SizedBox(height: 20),
             const Text(
               'Klik tombol "kembali"\n'
-              'Selanjutnya, konfirmasi pembayaran anda sesuai dengan instruksi pembayaran',
+              'Selanjutnya, konfirmasi pembayaran anda sesuai dengan "instruksi pembayaran"',
             ),
           ],
         ),

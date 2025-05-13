@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:proyek/routes/app_routes.dart'; // Pastikan ini diimport
+import 'package:google_fonts/google_fonts.dart';
+import 'package:proyek/routes/app_routes.dart';
 import 'package:proyek/services/auth_service.dart';
 import 'package:proyek/views/dashboard/client_dashboard.dart';
 
@@ -20,44 +21,81 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Login')),
+      backgroundColor: const Color(0xFFF5F5F5),
       body: Stack(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Form(
-              key: _formKey,
-              child: ListView(
-                children: [
-                  TextFormField(
-                    controller: _usernameController,
-                    decoration: const InputDecoration(labelText: 'Username'),
-                    validator: (value) => value!.isEmpty ? 'Required' : null,
-                  ),
-                  TextFormField(
-                    controller: _passwordController,
-                    obscureText: true,
-                    decoration: const InputDecoration(labelText: 'Password'),
-                    validator: (value) => value!.isEmpty ? 'Required' : null,
-                  ),
-                  const SizedBox(height: 20),
-                  _isLoading
-                      ? const Center(child: CircularProgressIndicator())
-                      : ElevatedButton(
-                          onPressed: _login,
-                          child: const Text('Login'),
+          Center(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(24.0),
+              child: Form(
+                key: _formKey,
+                child: Card(
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                  elevation: 8,
+                  child: Padding(
+                    padding: const EdgeInsets.all(24.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          'Masukkan Username dan Password',
+                          style: GoogleFonts.poppins(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blueGrey[800],
+                          ),
                         ),
-                  TextButton(
-                    onPressed: () => Navigator.pushReplacementNamed(context, '/register'),
-                    child: const Text('Don\'t have an account? Register'),
+                        const SizedBox(height: 16),
+                        _buildInputField(
+                          controller: _usernameController,
+                          label: 'Username',
+                          icon: Icons.person_outline,
+                          isPassword: false,
+                        ),
+                        const SizedBox(height: 16),
+                        _buildInputField(
+                          controller: _passwordController,
+                          label: 'Password',
+                          icon: Icons.lock_outline,
+                          isPassword: true,
+                        ),
+                        const SizedBox(height: 24),
+                        _isLoading
+                            ? const CircularProgressIndicator()
+                            : SizedBox(
+                                width: double.infinity,
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    padding: const EdgeInsets.symmetric(vertical: 14),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(14),
+                                    ),
+                                  ),
+                                  onPressed: _login,
+                                  child: Text(
+                                    'Masuk',
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                        const SizedBox(height: 12),
+                        TextButton(
+                          onPressed: () => Navigator.pushReplacementNamed(context, '/register'),
+                          child: Text(
+                            'Belum Memiliki Akun? Daftar Sekarang',
+                            style: GoogleFonts.poppins(color: Colors.blueGrey),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                  const SizedBox(height: 60), // Space untuk tombol kembali
-                ],
+                ),
               ),
             ),
           ),
-          
-          // Tombol kembali di pojok kiri bawah
           Positioned(
             left: 16,
             bottom: 16,
@@ -70,6 +108,26 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildInputField({
+    required TextEditingController controller,
+    required String label,
+    required IconData icon,
+    required bool isPassword,
+  }) {
+    return TextFormField(
+      controller: controller,
+      obscureText: isPassword,
+      validator: (value) => value!.isEmpty ? 'Wajib diisi' : null,
+      decoration: InputDecoration(
+        labelText: label,
+        prefixIcon: Icon(icon),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
+        filled: true,
+        fillColor: Colors.white,
       ),
     );
   }

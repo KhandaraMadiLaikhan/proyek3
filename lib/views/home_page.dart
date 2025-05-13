@@ -60,7 +60,7 @@ class _HomePageState extends State<HomePage> {
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const SizedBox(height: 20),
 
@@ -93,30 +93,21 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-              const SizedBox(height: 40),
+              const SizedBox(height: 25),
 
               // Judul "One GYM"
               _buildAnimatedItem(
                 showTitle,
                 Center(
-                  child: Text(
-                    'One GYM',
-                    style: TextStyle(
-                      fontSize: 64,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.blueGrey[800],
-                      shadows: const [
-                        Shadow(
-                          offset: Offset(2, 2),
-                          blurRadius: 4,
-                          color: Colors.black26,
-                        ),
-                      ],
-                    ),
+                  child: Image.asset(
+                    'images/gym5.png', // Ganti dengan path gambarmu
+                    height: 250, // Atur sesuai ukuran yang diinginkan
+                    fit: BoxFit.contain,
                   ),
                 ),
               ),
-              const SizedBox(height: 40),
+
+              const SizedBox(height: 10),
 
               // Tombol Login
               _buildAnimatedItem(
@@ -124,10 +115,10 @@ class _HomePageState extends State<HomePage> {
                 Center(
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFFB4BDC7),
+                      backgroundColor: const Color.fromARGB(255, 237, 241, 247),
                       foregroundColor: Colors.black,
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 40, vertical: 16),
+                          horizontal: 20, vertical: 10),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
@@ -136,13 +127,14 @@ class _HomePageState extends State<HomePage> {
                       Navigator.pushNamed(context, AppRoutes.login);
                     },
                     child: const Text(
-                      'Login',
+                      'Masuk',
                       style: TextStyle(fontSize: 18),
                     ),
                   ),
                 ),
               ),
-              const SizedBox(height: 30),
+
+              const SizedBox(height: 20),
 
               // InfoCards
               _buildAnimatedItem(
@@ -188,6 +180,7 @@ class InfoCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: 300,
+      height: 230, // tambahkan height agar semua card sama tinggi
       child: Card(
         elevation: 4,
         shape: RoundedRectangleBorder(
@@ -196,19 +189,22 @@ class InfoCard extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
                 title,
+                 textAlign: TextAlign.center,
                 style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               const SizedBox(height: 8),
-              Text(
-                content,
-                style: const TextStyle(fontSize: 14),
+              Expanded(
+                child: Text(
+                  content,
+                  style: const TextStyle(fontSize: 14),
+                ),
               ),
             ],
           ),
